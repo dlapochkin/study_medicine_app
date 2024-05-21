@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: PharmOS API
-  version: 1.0.0
+  version: 1.0.1
 servers:
   - url: https://api.server.test/api/v1
 tags:
@@ -127,7 +127,7 @@ paths:
           description: Invalid input
   /user/new:
     post:
-      summary: Create a new user
+      summary: Register a new user
       tags:
         - Users
         - POST
@@ -139,44 +139,59 @@ paths:
             schema:
               type: object
               required:
-                - username
-                - create_at
-                - is_premium
                 - apple_id
-                - email
+                - username
               properties:
-                    username: 
-                      type: string
-                      example: user
-                    birth_date: 
-                      type: string
-                      format: date
-                      example: 1970-01-01
-                    create_at: 
-                      type: string
-                      format: date
-                      example: 2024-05-19
-                    is_premium:
-                      type: boolean
-                      example: false
-                    apple_id:
-                      type: string
-                      example: user@icloud.com
-                    email: 
-                      type: string
-                      example: user@example.com
-                    email_verified: 
-                      type: boolean
-                      example: false
+                apple_id:
+                  type: string
+                  format: email
+                  example: user@icloud.com
+                username:
+                  type: string
+                  example: username
+                birth_date:
+                  type: string
+                  format: date
+                  example: 1970-01-01
       responses:
-        201:
-          description: Successful creation
-        400:
-          description: Invalid ID supplied
-        404:
-          description: User not found
+        200:
+          description: Successful registration
         405:
           description: Invalid input
+  /user/login:
+    post:
+      summary: User login
+      tags:
+        - Users
+        - POST
+      requestBody:
+        description: Data for user login
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - apple_id
+              properties:
+                apple_id:
+                  type: string
+                  format: email
+                  example: user@icloud.com
+      responses:
+        200:
+          description: Successful login
+        405:
+          description: Invalid input
+  /user/logout:
+    post:
+      summary: User logout
+      tags:
+        - Users
+        - POST
+      responses:
+        200:
+          description: Successful logout
   /tags/{user_id}:
       get:
         summary: Get all user's tags
