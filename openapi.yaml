@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: PharmOS API
+  title: pharmy API
   version: 1.0.0
 servers:
   - url: https://api.server.test/api/v1
