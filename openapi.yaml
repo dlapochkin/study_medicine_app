@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: PharmOS API
-  version: 1.0.1
+  version: 1.0.0
 servers:
   - url: https://api.server.test/api/v1
 tags:
@@ -123,39 +123,6 @@ paths:
           description: Invalid ID supplied
         404:
           description: User not found
-        405:
-          description: Invalid input
-  /user/new:
-    post:
-      summary: Register a new user
-      tags:
-        - Users
-        - POST
-      requestBody:
-        description: Data for the new user
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - apple_id
-                - username
-              properties:
-                apple_id:
-                  type: string
-                  format: email
-                  example: user@icloud.com
-                username:
-                  type: string
-                  example: username
-                birth_date:
-                  type: string
-                  format: date
-                  example: 1970-01-01
-      responses:
-        200:
-          description: Successful registration
         405:
           description: Invalid input
   /user/login:
@@ -1080,7 +1047,7 @@ paths:
           description: User not found
         405:
           description: Invalid input
-  /medicine_kit/{medicine_kit_id}/medicine/{medicine_id}:
+  /medicine_kit/{user_id}/{medicine_kit_id}/medicine/{medicine_id}:
     post:
       summary: Add medicine to medicine_kit
       tags:
@@ -1088,6 +1055,14 @@ paths:
         - Medicine kits
         - POST
       parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User identifier
+          schema:
+            type: string
+            format: uuid
+            example: 50067527-5ce6-41dc-91e4-8d63c79eadba
         - name: medicine_kit_id
           in: path
           required: true
@@ -1110,7 +1085,7 @@ paths:
         400:
           description: Invalid ID supplied
         404:
-          description: Medicine or medicine kit not found
+          description: Medicine, user or medicine kit not found
         405:
           description: Invalid input
     delete:
@@ -1120,6 +1095,14 @@ paths:
       - DELETE
       summary: Delete medicine tag
       parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User identifier
+          schema:
+            type: string
+            format: uuid
+            example: 50067527-5ce6-41dc-91e4-8d63c79eadba
         - name: medicine_kit_id
           in: path
           required: true
